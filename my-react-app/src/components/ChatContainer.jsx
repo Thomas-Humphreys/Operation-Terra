@@ -1,8 +1,13 @@
+import TypingArea from "./TypingArea";
 
 function ChatContainer(){
     return (
         <div className="chatContainer">
-            <p>hi2</p>
+            <div className="visualChatSection"></div>
+            <div className="typingContainer">
+                <TypingArea /> {/* where text is entered into */}
+                <button></button> {/* send button */}
+            </div>
         </div>
     )
 }
