@@ -19,9 +19,15 @@
 }
 #terraImage{
     height: 100%;
-    width: 40%;
+    width: 35%;
+    background-color: brown;
 }
 #chatWindow{
     height: 100%;
-    width: 60%;
+    width: 65%;
+    background-color: blue;
+}
+.typingContainer{
+    height: 15%;
+    width: 100%;
 }
