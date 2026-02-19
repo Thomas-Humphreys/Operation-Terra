@@ -1,9 +1,9 @@
-.sideBarContainer{
+/*.sideBarContainer{
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     background-color: antiquewhite;
-    width: 20%; /*temp */
-}
+    width: 20%; /*temp*/
+/*}*/
