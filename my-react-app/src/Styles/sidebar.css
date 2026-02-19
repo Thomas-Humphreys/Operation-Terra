@@ -5,6 +5,5 @@
     justify-content: space-around;
     align-items: center;
     background-color: antiquewhite;
-    flex-basis: 2; /* check this */
-    
+    width: 20%; /*temp */
 }

@@ -1,4 +1,38 @@
+:root{
+    --small-spacing: 0.25rem;
+    --medium-spacing: 0.5rem;
+    --large-spacing: 1rem;
+    --larger-spacing: 2rem;
+
+    --dark-mode-primary: #779d82;
+    --dark-mode-secondary: #324e53;
+    --dark-mode-accent: #2f4c61;
+    --dark-mode-bg: #030705;
+    --dark-mode-text: #e6f0ea;
+
+    --light-mode-primary:#8cb496;
+    --light-mode-secondary: #acc8cd;
+    --light-mode-accent:#9fbcd1;
+    --light-mode-bg: #f8fcfa;
+    --light-mode-text: #0f1a13;
+
+}
+
+*{
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+    /* for debugging purposes */
+    outline: 1px solid red;
+}
+
+
 body {
   width: 100vw;
+  height: 100vh;
+}
+#root{
+  width: 100%;
   height: 100%;
 }
+
