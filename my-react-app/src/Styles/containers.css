@@ -11,3 +11,17 @@
     display: flex;
     flex-direction: column;
 }
+.visualChatContainer{
+    display: flex;
+    height: 85%;
+    width: 100%;
+    background-color: blueviolet;
+}
+#terraImage{
+    height: 100%;
+    width: 40%;
+}
+#chatWindow{
+    height: 100%;
+    width: 60%;
+}
