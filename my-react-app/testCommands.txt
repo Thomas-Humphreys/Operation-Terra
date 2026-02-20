@@ -1,0 +1,5 @@
+
+curl https://api.greenpt.ai/v1/chat/completions ^
+  -H "Content-Type: application/json" ^
+  -H "Authorization: Bearer API_KEY" ^
+  -d "{ \"model\": \"green-r\",\"messages\": [{\"role\": \"user\",\"content\": \"Hello, how are you?\"}],\"stream\": false }"
