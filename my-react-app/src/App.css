@@ -35,36 +35,3 @@ body {
   width: 100%;
   height: 100%;
 }
-
-.parent {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    width: 100%;
-    height: 100%;
-}
-
-.sidebar { 
-    grid-area: 1 / 1 / 6 / 3; 
-    background-color: #acc8cd;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.chatContainer { 
-  grid-area: 5 / 3 / 6 / 9; 
-  background-color: #030705;
-}
-.terraImageContainer { 
-  grid-area: 1 / 3 / 5 / 5; 
-  background-color: #8cb496;
-}
-.chatWindow { 
-  grid-area: 1 / 5 / 5 / 9; 
-  background-color: #2f4c61;
-}
-

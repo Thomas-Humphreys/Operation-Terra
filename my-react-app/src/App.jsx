@@ -1,15 +1,10 @@
 import './App.css'
 import MainContainer from './components/MainContainer'
-
+import Layout from './components/Layout';
 function App() {
     return(
       //<MainContainer />
-      <div className="parent">
-          <div className="sidebar">sidebar</div>
-          <div className="chatContainer">typing container</div>
-          <div className="terraImageContainer">terra image</div>
-          <div className="chatWindow"> chat window </div>
-      </div> 
+      <Layout /> 
     )
 }
 
