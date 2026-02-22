@@ -10,3 +10,8 @@ Consider later:
 
 
 To Do:
+    - finish off text prompt
+    - make tooltips and maybe search bar buttons their own component
+    - connect api to prompt and get back response
+    (ideally finish 22/02)
+    - look into other ways for mood and image -> just how to do for now
