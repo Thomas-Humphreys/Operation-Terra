@@ -1,0 +1,18 @@
+Ideas of features to include:
+
+Can do now/soon:
+    - light/dark mode
+    - expand/shrink sideBar
+
+Consider later:
+    - music
+    - audio -> can speak to Terra
+    - change font size
+
+
+To Do:
+    - finish off text prompt
+    - make tooltips and maybe search bar buttons their own component
+    - connect api to prompt and get back response
+    (ideally finish 22/02)
+    - look into other ways for mood and image -> just how to do for now
