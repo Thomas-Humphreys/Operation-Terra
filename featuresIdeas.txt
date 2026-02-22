@@ -7,6 +7,7 @@ Can do now/soon:
 Consider later:
     - music
     - audio -> can speak to Terra
+    - change font size
 
 
 To Do:

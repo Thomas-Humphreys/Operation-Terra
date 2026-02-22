@@ -10,16 +10,16 @@ function TypingArea(){
         <div className="textArea">
             
             {/* text area */}
-            <div className="textContainer"> 
+            {/* <div className="textContainer">  */}
                 {/* <div className="textForm"> type here</div> */}
                 {/* redo textarea!!!!!!!!! */}
-                <textarea type="text" rows="5" cols="120" placeholder="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)}/>
-            </div>
+                <textarea  className="textContainer" type="text"  placeholder="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)}/>
+            {/* </div> */}
       
 
             <div className="searchBar">
                 <div className="addDocument searchBarButton"><Plus />
-                    <span className="tooltiptext">Add Document</span>
+                    <span className="tooltiptext">Add Picture</span>
                 </div>
                 <div /> {/* for empty space */}
                 <div className="audio searchBarButton"><AudioLines />
