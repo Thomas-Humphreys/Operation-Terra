@@ -3,5 +3,39 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    background-color: antiquewhite;
+    background-color: var(--light-mode-bg);
+    overflow-y: auto;
+    gap: var(--medium-spacing);
+    padding: var(--medium-spacing);
+}
+.quest-card{
+    padding: var(--medium-spacing);
+    background-color: var(--light-mode-primary);
+    width: 80%;
+    border-radius: 10px;
+    color: var(--light-mode-text);
+}
+.quest-card:hover{
+    background-color: var(--light-mode-secondary);
+
+}
+
+.ongoing {
+    border: 3px dashed gray;
+}
+.ongoing:hover{
+    border: 3px solid gray;
+}
+.complete{
+    border: 3px dashed green;
+}
+.complete:hover{
+    border: 3px solid green;
+}
+
+.failed{
+    border: 3px dashed red;
+}
+.failed:hover{
+    border: 3px solid red;
 }
