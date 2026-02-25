@@ -1,0 +1,6 @@
+.chat {
+    height: 100%; 
+    overflow-y: auto;
+}
+
+/* add animations to text messages!!! */

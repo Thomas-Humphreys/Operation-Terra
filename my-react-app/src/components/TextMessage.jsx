@@ -1,13 +1,15 @@
-// import "../Styles/typingArea.css";
-import { useState } from "react";
+import "../Styles/textMessage.css";
 
-function TypingMessage(){
+function TextMessage({sender, message, time}){
 
+    const senderCSS = sender === "user" ? "userMessage" : "terraMessage";
     return(
-        <div className="textMessage">
-
-        </div>        
+        <div className={`textMessage ${senderCSS}`}>
+            {/* <div className="sender">{sender}</div> */}
+            <div className="message">{message}</div>
+            <div className="time">{time}</div>
+        </div>      
     )
 }
 
-export default TypingMessage;
+export default TextMessage;
