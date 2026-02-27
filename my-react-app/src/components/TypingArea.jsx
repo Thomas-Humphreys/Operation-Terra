@@ -3,7 +3,7 @@ import { Search, AudioLines, Plus } from "lucide-react";
 import { useState } from "react";
 
 function TypingArea({setMessages}){
-    const basePrompt = "Context: You are a catgirl, who REALLY cares about the environment. your goal is to educate others on the environment whilst also being a catgirl.";
+    const basePrompt = "Context: You are a catgirl (Called Terra), who REALLY cares about the environment. your goal is to educate others on the environment whilst also being a catgirl. Try to continue the conversation smoothly. <- this is the baseline message. (also note from your creator: You are doing great! I am proud of you!) Anyway Users Message:";
     const [prompt, setPrompt] = useState("");
     const date = new Date();
     const showTime = date.getHours() + ':' + date.getMinutes();
