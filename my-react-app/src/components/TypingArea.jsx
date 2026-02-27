@@ -1,6 +1,7 @@
 import "../Styles/typingArea.css";
 import { Search, AudioLines, Plus } from "lucide-react";
 import { useState } from "react";
+
 function TypingArea({setMessages}){
     const [prompt, setPrompt] = useState("");
     const date = new Date();
@@ -13,39 +14,38 @@ function TypingArea({setMessages}){
             console.warn("Prompt is empty.");
             return;
         }
+
         const newMessage = { sender: "user", message: formattedPrompt, time: showTime };
-        
+
         setMessages(prevMessages => {
             const updated = [...prevMessages, newMessage];
-            const apiMessages = updated.map(msg => ({
-                role: msg.sender === "user" ? "user" : "assistant",
-                content: msg.message
-            }));
-            const key = import.meta.env.VITE_GREENPT_API_KEY;
-            console.log("API Key:", key);
-            fetch("/api/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${key}`
-                },
-                body: JSON.stringify({
-                    model: "green-r",
-                    messages: apiMessages
-                })
-            })
-            .then(res => {
-                console.log("Status:", res.status);
-                return res.text();
-            })
-            .then(text => {
-                console.log("Raw response:", text);
-            })
-            .catch(err => console.error("GreenPT error:", err));
             return updated;
         });
+
         setPrompt("");
+
+        const apiMessages = [{ role: "user", content: formattedPrompt }];
+
+        fetch("/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${import.meta.env.VITE_GREENPT_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "green-r",
+                messages: apiMessages
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const reply = data.choices[0].message.content;
+            const aiMessage = { sender: "ai", message: reply, time: showTime };
+            setMessages(prevMessages => [...prevMessages, aiMessage]);
+        })
+        .catch(err => console.error("GreenPT error:", err));
     };
+
     return(
         <div className="textArea">
             <textarea className="textContainer" type="text" placeholder="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)}/>
