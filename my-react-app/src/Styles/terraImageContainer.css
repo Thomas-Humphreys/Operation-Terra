@@ -1,0 +1,80 @@
+.terraImageContainer{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.moodIndicatorBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    width: 60%;
+    height: 50px;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+}
+
+/* for glowing effect of button: */
+/* https://codepen.io/arximughal/pen/LEpoOJ */
+.moodButton {
+    background-color: rgba(0, 0, 0, 0.455);
+    color: rgb(255, 255, 255);
+    -webkit-border-radius: 50px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0.4;
+    transform: scale(0.85);
+    border: 2px solid transparent;
+}
+
+
+
+.moodButton.active {
+    opacity: 1;
+    transform: scale(1);
+    border: 3px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.moodButton.angryGlow {
+    -webkit-animation: glowing 1500ms infinite;
+    -moz-animation: glowing 1500ms infinite;
+    -o-animation: glowing 1500ms infinite;
+    animation: glowing 1500ms infinite;
+}
+
+
+
+@-webkit-keyframes glowing {
+  0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; -webkit-box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; -moz-box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+}
+
+@keyframes glowing {
+  0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+}
