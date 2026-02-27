@@ -3,20 +3,21 @@ import { Search, AudioLines, Plus } from "lucide-react";
 import { useState } from "react";
 
 function TypingArea({setMessages}){
+    const basePrompt = "Context: You are a catgirl, who REALLY cares about the environment. your goal is to educate others on the environment whilst also being a catgirl.";
     const [prompt, setPrompt] = useState("");
     const date = new Date();
     const showTime = date.getHours() + ':' + date.getMinutes();
     
     const handlePromptMessage = async (e) => {
         e.preventDefault();
-        const formattedPrompt = prompt.trim();
+        const formattedPrompt = basePrompt + prompt.trim();
+
         if (formattedPrompt === "") {
             console.warn("Prompt is empty.");
             return;
         }
 
-        const newMessage = { sender: "user", message: formattedPrompt, time: showTime };
-
+        const newMessage = { sender: "user", message: prompt.trim(), time: showTime }; 
         setMessages(prevMessages => {
             const updated = [...prevMessages, newMessage];
             return updated;
@@ -24,8 +25,7 @@ function TypingArea({setMessages}){
 
         setPrompt("");
 
-        const apiMessages = [{ role: "user", content: formattedPrompt }];
-
+        const apiMessages = [{ role: "user", content: formattedPrompt }]; 
         fetch("/api/v1/chat/completions", {
             method: "POST",
             headers: {
