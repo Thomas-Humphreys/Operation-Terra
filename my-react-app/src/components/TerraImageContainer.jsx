@@ -35,7 +35,7 @@ function TerraImageContainer({ terraMood = "angry" }){
     
     return(
         <div className="terraImageContainer">
-            <img id="terraImage" src={angryTerra} alt="Happy Terra" width="350px" height="450px" />
+            <img id="terraImage" src={terraImage} alt="Happy Terra" width="350px" height="450px" />
             <div className="moodIndicatorBar">
                 {moods.map((mood) => (
                     <div 
