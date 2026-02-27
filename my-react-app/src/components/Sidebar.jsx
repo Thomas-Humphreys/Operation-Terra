@@ -147,6 +147,7 @@ function Sidebar() {
 
     return(
             <div className="sideBarContainer">
+                <h2>Quests</h2>
                 {quests.map((quest) => (
                     <div key={quest.id} className={`quest-card ${quest.currentStatus.toLowerCase()}`}>
                         <h2>{quest.questName}</h2>
