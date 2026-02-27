@@ -1,7 +1,7 @@
 .textArea {
     display: grid;
     grid-template-rows: minmax(100px, 2.5fr) 1fr;
-    background-color:#97da81;
+    background-color:#8cb496;
     justify-items: center;
     align-items: center; 
     padding: 10px;
