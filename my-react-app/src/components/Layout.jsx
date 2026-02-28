@@ -41,7 +41,7 @@ import { useState } from "react";
 ];
 
 function Layout(){
-    const [happyness, setHappyness] = useState(-60);
+    const [happyness, setHappyness] = useState(10);
     const [quests, setQuests] = useState(initialQuests);
     const sampleMessages = [
         {sender: "user", message: "Hello there!", time: "12:00:00"},
