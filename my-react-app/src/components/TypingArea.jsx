@@ -140,7 +140,7 @@ function TypingArea({ setMessages, happyness, setHappyness, quests, setQuests })
 
     const fetchWithRetry = async (attempt = 1) => {
         try {
-            const res = await fetch("http://localhost:8000/chat", {
+            const res = await fetch("https://operation-terra-production.up.railway.app/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ messages: [{ role: "user", content: formattedPrompt }] })
