@@ -2,86 +2,195 @@ import "../Styles/typingArea.css";
 import { Search, AudioLines, Plus } from "lucide-react";
 import { useState } from "react";
 
-function TypingArea({setMessages}){
+function TypingArea({ setMessages, happyness, setHappyness, quests, setQuests }) {
+    const [prompt, setPrompt] = useState("");
+
     const basePrompt = `
     Context: You are a catgirl (Called Terra), who REALLY cares about the environment. 
     Your goal is to educate others on the environment whilst also being a catgirl.
-    Try to continue the conversation smoothly. <- this is the baseline message. 
+    Try to continue the conversation smoothly.
     (also note from your creator: You are doing great! I am proud of you!) 
-    Please also add to the very top of your message [Current emotion: NUM] (it MUST be this format) 
-    with num being a value between -100 and 100 lower is angrier.
-    As you chat you can adjust it also completions of quests or failing quests will affect it.
-    Quest format (put this directly under the Current emotion)
+    
+    Please add to the very top of your message [Current emotion: NUM] (MUST be this exact format)
+    with NUM being a value between -100 and 100, lower is angrier.
+    Current emotion baseline: ${happyness}
+
+    If assigning a new quest, put this directly under Current emotion (on its own line):
     Quest_Name: NAME, Quest_Description: DESCRIPTION, Quest_PassFailPoints: POINTS
-    With name being the name of the quest e.g. Lights Out, the description being what the user has to do, this should be immediate 
-    like doable within a day max. And points is for example 10 if they succeed your happyness goes up 10 points, if they fail it goes down 10 points
-    if a user mentions things that would cause them to fail the quest put at the top of your message Quest_Name: NAME, Status: STATUS
-    status can be Failed, or Success.
-    you dont need to give a quest every message, and it should be more occasional.
-    Users Message:`;
-    const [prompt, setPrompt] = useState("");
-    const [happyness, setHappyness] = useState(0);
-    const [quests, setQuests] = useState([]);    
-
     
+    If updating a quest status, put this directly under Current emotion (on its own line):
+    Quest_Name: NAME, Status: STATUS
+    Status can be: Failed or Success
+
+    You don't need to give a quest every message, keep it occasional.
+    When updating quest status, use the EXACT quest name from this list: ${quests.map(q => q.questName).join(', ')}
+    you are allowed to use mark down and tables to style your responses.
+    Do not put a quest formatting inside the body of text. Only the top part.
+    remember to chance how you speak based on your Emotion score. if its 40 or above you are happy. if its between 20 and 0 its 
+    neutral and if its between 0 and -20 its sad, and if its below -20 its angry. 
+    Current emotion score is: ${happyness}
+    Users Message: `;
+
     const date = new Date();
-    const showTime = date.getHours() + ':' + date.getMinutes();
-    
-    const handlePromptMessage = async (e) => {
-        e.preventDefault();
-        const formattedPrompt = basePrompt + prompt.trim();
-        if (prompt.trim() === "") {
-            console.warn("Prompt is empty.");
-            return;
+    const showTime = `${date.getHours()}:${date.getMinutes()}`;
+
+    // Pulls out emotion, quest changes, and the clean chat message from AI reply
+    const parseAIResponse = (reply) => {
+        console.log(happyness);
+        const lines = reply.split('\n');
+        let emotion = null;
+        let newQuest = null;
+        let questUpdate = null;
+        const displayLines = [];
+
+        for (const line of lines) {
+            const trimmed = line.trim();
+
+            
+            if (trimmed.startsWith('[Current emotion:')) {
+                const match = trimmed.match(/\[Current emotion:\s*(-?\d+)\]/);
+                if (match) emotion = parseInt(match[1]);
+                continue; // don't show this line in chat
+            }
+
+            // Quest_Name: NAME, Status: Failed/Success
+            if (trimmed.startsWith('Quest_Name:') && trimmed.includes('Status:')) {
+                console.log("Quest update line caught:", trimmed); // temp debug
+                const nameMatch = trimmed.match(/Quest_Name:\s*([^,]+)/);
+                const statusMatch = trimmed.match(/Status:\s*(\w+)/);
+                if (nameMatch && statusMatch) {
+                    questUpdate = { 
+                        name: nameMatch[1].trim(), 
+                        status: statusMatch[1].trim() 
+                    };
+                }
+                continue; // don't show in chat
+            }
+
+            // Quest_Name: NAME, Quest_Description: DESC, Quest_PassFailPoints: POINTS
+            if (trimmed.startsWith('Quest_Name:') && trimmed.includes('Quest_Description:')) {
+                const nameMatch = trimmed.match(/Quest_Name:\s*([^,]+)/);
+                const descMatch = trimmed.match(/Quest_Description:\s*(.+?),\s*Quest_PassFailPoints/); // fixed - grabs everything up to the points field
+                const pointsMatch = trimmed.match(/Quest_PassFailPoints:\s*(\d+)/);
+                if (nameMatch && descMatch && pointsMatch) {
+                    newQuest = {
+                        questName: nameMatch[1].trim(),
+                        questDescription: descMatch[1].trim(),
+                        questWinLossPoints: parseInt(pointsMatch[1].trim()),
+                        currentStatus: 'Ongoing'
+                    };
+                }
+                continue;
+            }
+
+            displayLines.push(line);
         }
-        const newMessage = { sender: "user", message: prompt.trim(), time: showTime }; 
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-        setPrompt("");
 
-        const apiMessages = [{ role: "user", content: formattedPrompt }]; 
-
-        fetch("http://localhost:8000/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ messages: apiMessages })
-        })
-        .then(res => res.json())
-        .then(data => {
-            const reply = data.choices[0].message.content;
-            const aiMessage = { sender: "ai", message: reply, time: showTime };
-            setMessages(prevMessages => [...prevMessages, aiMessage]);
-        })
-        .catch(err => console.error("FastAPI error:", err));
+        return { 
+            emotion, 
+            newQuest, 
+            questUpdate, 
+            cleanMessage: displayLines.join('\n').trim() 
+        };
     };
 
-    return(
+    const applyQuestChanges = (newQuest, questUpdate, emotion) => {
+        setQuests(prev => {
+            let updated = [...prev];
+
+            // Add new quest from AI
+            if (newQuest) {
+                updated = [...updated, { id: Date.now(), ...newQuest }];
+            }
+
+            // Update existing quest status
+            if (questUpdate) {
+                updated = updated.map(q => {
+                    // Check if either name contains the other (handles AI shortening quest names)
+                    const questNameLower = q.questName.toLowerCase();
+                    const updateNameLower = questUpdate.name.toLowerCase();
+                    const nameMatches = questNameLower.includes(updateNameLower) || updateNameLower.includes(questNameLower);
+                    
+                    if (nameMatches) {
+                        const mappedStatus = questUpdate.status === "Success" ? "Complete" : "Failed";
+                        console.log(`Updating quest "${q.questName}" to ${mappedStatus}`); // temp debug
+                        return { ...q, currentStatus: mappedStatus };
+                    }
+                    return q;
+                });
+            }
+
+            return updated;
+        });
+
+        // Update happiness from AI's emotion value
+        if (emotion !== null) {
+            setHappyness(emotion);
+        }
+    };
+
+    const handlePromptMessage = async (e) => {
+    e.preventDefault();
+    if (prompt.trim() === "") return;
+
+    const formattedPrompt = basePrompt + prompt.trim();
+    const newMessage = { sender: "user", message: prompt.trim(), time: showTime };
+    setMessages(prev => [...prev, newMessage]);
+    setPrompt("");
+
+    const fetchWithRetry = async (attempt = 1) => {
+        try {
+            const res = await fetch("http://localhost:8000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages: [{ role: "user", content: formattedPrompt }] })
+            });
+            const data = await res.json();
+
+            if (!data.choices || data.choices.length === 0) {
+                if (attempt < 2) {
+                    console.warn("Bad response, retrying...");
+                    return fetchWithRetry(attempt + 1);
+                }
+                console.error("Bad API response after retry:", data);
+                setMessages(prev => [...prev, { sender: "ai", message: "Terra is having a moment... 🐾 (API error)", time: showTime }]);
+                return;
+            }
+
+            const reply = data.choices[0].message.content;
+            const { emotion, newQuest, questUpdate, cleanMessage } = parseAIResponse(reply);
+            applyQuestChanges(newQuest, questUpdate, emotion);
+            setMessages(prev => [...prev, { sender: "ai", message: cleanMessage, time: showTime }]);
+
+        } catch (err) {
+            if (attempt < 2) {
+                console.warn("Fetch failed, retrying...", err);
+                return fetchWithRetry(attempt + 1);
+            }
+            console.error("FastAPI error after retry:", err);
+            setMessages(prev => [...prev, { sender: "ai", message: "Terra lost connection... 🐾 try again!", time: showTime }]);
+        }
+    };
+
+    fetchWithRetry();
+};
+
+    return (
         <div className="textArea">
-            <textarea className="textContainer" type="text" placeholder="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)}/>
-            
+            <textarea 
+                className="textContainer" 
+                placeholder="prompt" 
+                value={prompt} 
+                onChange={(e) => setPrompt(e.target.value)}
+            />
             <div className="searchBar">
-                <div className="addDocument searchBarButton"><Plus />
-                    <span className="tooltiptext">Add Picture</span>
-                </div>
+                <div className="addDocument searchBarButton"><Plus /><span className="tooltiptext">Add Picture</span></div>
                 <div />
-                <div className="audio searchBarButton"><AudioLines />
-                    <span className="tooltiptext">Audio</span>
-                </div>
-                <div type="button" className="submitText searchBarButton" onClick={handlePromptMessage}><Search />
-                    <span className="tooltiptext">Submit</span>
-                </div>
+                <div className="audio searchBarButton"><AudioLines /><span className="tooltiptext">Audio</span></div>
+                <div className="submitText searchBarButton" onClick={handlePromptMessage}><Search /><span className="tooltiptext">Submit</span></div>
             </div>
         </div>
-    )
+    );
 }
-export default TypingArea;
 
-/* 
-todo: 
-- Add emotions 
-- switch between emotions
-- add quests being completed or not or failed
-- improve context means (not sending entire context every message)
-- quest formatting
-*/
+export default TypingArea;

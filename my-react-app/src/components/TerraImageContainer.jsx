@@ -3,28 +3,23 @@ import sadTerra from '../assets/sad.png';
 import neutralTerra from '../assets/neutral.png';
 import angryTerra from '../assets/angry.png';
 import { Laugh, Frown, Meh, Angry } from "lucide-react";
-
 import "../Styles/terraImageContainer.css";
-function TerraImageContainer({ terraMood = "angry" }){
 
-    let terraImage;
+function TerraImageContainer({ happyness }) {
 
-    switch(terraMood){
-        case "happy":
-            terraImage = happyTerra;
-            break;
-        case "sad":
-            terraImage = sadTerra;
-            break;
-        case "neutral":
-            terraImage = neutralTerra;
-            break;
-        case "angry":
-            terraImage = angryTerra;
-            break;
-        default:
-            terraImage = neutralTerra;
-    }
+    let terraMood;
+    if (happyness >= 40) terraMood = "happy";
+    else if (happyness >= 0) terraMood = "neutral";
+    else if (happyness > -40) terraMood = "sad";
+    else terraMood = "angry";
+
+    const imageMap = {
+        happy: happyTerra,
+        neutral: neutralTerra,
+        sad: sadTerra,
+        angry: angryTerra,
+    };
+    const terraImage = imageMap[terraMood];
 
     const moods = [
         { name: "happy", icon: <Laugh />, color: "#c6d448" },
@@ -32,15 +27,15 @@ function TerraImageContainer({ terraMood = "angry" }){
         { name: "sad", icon: <Frown />, color: "#48b1d4" },
         { name: "angry", icon: <Angry />, color: "#d46448" }
     ];
-    
-    return(
+
+    return (
         <div className="terraImageContainer">
             <img id="terraImage" src={terraImage} alt="Happy Terra" width="350px" height="450px" />
             <div className="moodIndicatorBar">
                 {moods.map((mood) => (
-                    <div 
+                    <div
                         key={mood.name}
-                        className={`moodButton ${mood.name} ${terraMood === mood.name ? 'active' : ''} ${terraMood === "angry" && mood.name === "angry" ? 'angryGlow' : ''} `}
+                        className={`moodButton ${mood.name} ${terraMood === mood.name ? 'active' : ''} ${terraMood === "angry" && mood.name === "angry" ? 'angryGlow' : ''}`}
                         style={{ backgroundColor: terraMood === mood.name ? mood.color : 'transparent' }}
                     >
                         {mood.icon}
@@ -48,7 +43,7 @@ function TerraImageContainer({ terraMood = "angry" }){
                 ))}
             </div>
         </div>
-    )
+    );
 }
 
 export default TerraImageContainer;
