@@ -1,4 +1,4 @@
-<img width="292" height="133" alt="image" src="https://github.com/user-attachments/assets/cf928f4a-1cfe-49a6-b603-fc200d024e8e" /># Operation-Terra
+# Operation-Terra
 
 I hope you have an amazing time interacting with Terra! 
 
