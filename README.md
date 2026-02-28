@@ -1,5 +1,7 @@
 # Operation-Terra
 
+Made for the Hack for Humanity 2026
+
 Terra is an AI who cares deeply about the environment, she assigns users quests and informs them on green issues!
 
 Feel free to ask her for quests, tell her if you have completed quests or been unable to! 
