@@ -11,31 +11,22 @@ function TypingArea({setMessages}){
     const handlePromptMessage = async (e) => {
         e.preventDefault();
         const formattedPrompt = basePrompt + prompt.trim();
-
-        if (formattedPrompt === "") {
+        if (prompt.trim() === "") {
             console.warn("Prompt is empty.");
             return;
         }
-
         const newMessage = { sender: "user", message: prompt.trim(), time: showTime }; 
-        setMessages(prevMessages => {
-            const updated = [...prevMessages, newMessage];
-            return updated;
-        });
-
+        setMessages(prevMessages => [...prevMessages, newMessage]);
         setPrompt("");
 
         const apiMessages = [{ role: "user", content: formattedPrompt }]; 
-        fetch("/api/v1/chat/completions", {
+
+        fetch("http://localhost:8000/chat", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${import.meta.env.VITE_GREENPT_API_KEY}`
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                model: "green-r",
-                messages: apiMessages
-            })
+            body: JSON.stringify({ messages: apiMessages })
         })
         .then(res => res.json())
         .then(data => {
@@ -43,7 +34,7 @@ function TypingArea({setMessages}){
             const aiMessage = { sender: "ai", message: reply, time: showTime };
             setMessages(prevMessages => [...prevMessages, aiMessage]);
         })
-        .catch(err => console.error("GreenPT error:", err));
+        .catch(err => console.error("FastAPI error:", err));
     };
 
     return(
@@ -66,3 +57,13 @@ function TypingArea({setMessages}){
     )
 }
 export default TypingArea;
+
+/* 
+todo: 
+- Add emotions 
+- switch between emotions
+- add quests being completed or not or failed
+- improve context means (not sending entire context every message)
+- quest formatting
+- fastAPI ✓
+*/
