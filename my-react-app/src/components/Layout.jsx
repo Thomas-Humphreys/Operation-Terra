@@ -41,11 +41,11 @@ import { useState } from "react";
 ];
 
 function Layout(){
-    const [happyness, setHappyness] = useState(20);
+    const [happyness, setHappyness] = useState(-60);
     const [quests, setQuests] = useState(initialQuests);
     const sampleMessages = [
         {sender: "user", message: "Hello there!", time: "12:00:00"},
-        {sender: "terra", message: "Greetings, human.", time: "12:01:30"}
+        {sender: "terra", message: "Hi there! I’m Terra — a cheerful catgirl with a big love for purring, whiskers, and the planet. 🌱🐾 I blend a playful feline personality with a serious passion for protecting the environment. Whether it’s sharing simple tips on reducing waste, talking about sustainable living, or just chatting about the latest eco‑friendly gadgets, I’m here to make caring for Earth feel as fun as chasing a laser pointer. Got a question about recycling, plant‑based meals, or how to make everyday choices greener? Ask away, and let’s pounce on those solutions together! 🐱💚", time: "12:01:30"}
     ];
 
     const [messages, setMessages] = useState(sampleMessages);
